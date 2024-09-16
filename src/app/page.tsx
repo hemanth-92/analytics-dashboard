@@ -2,7 +2,7 @@ import { DashboardCard, DashboardCardContent } from "@/components/dashboard-card
 import UserDataCard, { UserDataProps } from "@/components/User-data-card";
 import { Calendar, DollarSign, PersonStanding, UserPlus, UserRoundCheck } from "lucide-react";
 import { db } from "@/lib/db";
-import { formatDistanceToNow } from "date-fns";
+import { endOfMonth,startOfMonth,formatDistanceToNow } from "date-fns";
 
 export default async function DashBoard() {
 
@@ -20,6 +20,30 @@ export default async function DashBoard() {
     time : formatDistanceToNow(new Date(account.createdAt),{addSuffix:true})
   }))
   
+  const salesCount = await db.purchase.count()
+
+  const salesTotal  = await db.purchase.aggregate({
+    _sum: {
+    amount :true
+    }
+  })
+  
+  const totalAmount = salesTotal._sum.amount || 0
+
+  // user count
+  const userCount =  await db.user.count()
+
+const currentDate =  new Date()
+
+  // user count this month
+  const userCountMonth = await db.user.count({
+    where: {
+      createdAt: {
+        gte: startOfMonth(currentDate),
+        lte: endOfMonth(currentDate),
+      },
+    },
+  });
   return (
     <div className="flex w-full flex-col gap-5">
       <h1 className="mx-6 text-center text-2xl font-bold">DashBoard</h1>
@@ -29,25 +53,25 @@ export default async function DashBoard() {
             <DashboardCard
               label={"Total Revenue"}
               Icon={DollarSign}
-              amount={43545}
+              amount={`$${totalAmount}`}
               description="All Time"
             />
             <DashboardCard
               label={"Total Paid Subscriptions"}
               Icon={Calendar}
-              amount={43545}
+              amount={`+${salesCount}`}
               description="All Time"
             />
             <DashboardCard
               label={"Total Users"}
               Icon={PersonStanding}
-              amount={43545}
+              amount={`+${userCount}`}
               description="All Time"
             />
             <DashboardCard
               label={"Users This month"}
               Icon={UserPlus}
-              amount={43545}
+              amount={`${userCountMonth}`}
               description="This Month"
             />
           </section>
