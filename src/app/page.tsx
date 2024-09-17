@@ -1,8 +1,9 @@
 import { DashboardCard, DashboardCardContent } from "@/components/dashboard-card";
 import UserDataCard, { UserDataProps } from "@/components/User-data-card";
-import { Calendar, DollarSign, PersonStanding, UserPlus, UserRoundCheck } from "lucide-react";
+import { Calendar, CreditCard, DollarSign, PersonStanding, UserPlus, UserRoundCheck } from "lucide-react";
 import { db } from "@/lib/db";
 import { endOfMonth,startOfMonth,formatDistanceToNow } from "date-fns";
+import UserPurchaseCard,{ UserPurchaseProps } from "@/components/user-purchase-card";
 
 export default async function DashBoard() {
 
@@ -44,6 +45,26 @@ const currentDate =  new Date()
       },
     },
   });
+
+
+  const recentSales = await db.purchase.findMany({
+    orderBy: {
+      createdAt: 'desc',
+    },
+    take: 8,
+    include: {
+      user:true,
+    }
+  })
+
+
+  const PurchaseCard: UserPurchaseProps[] = recentSales.map((purchase => ({
+      name: purchase.user.name || 'unknown',
+    email: purchase.user.email || 'unknow',
+    image: purchase.user.image || './mesh.jpg',
+    salesAmount:`$${(purchase.amount || 0 ).toFixed(2)}`
+  })))
+  
   return (
     <div className="flex w-full flex-col gap-5">
       <h1 className="mx-6 text-center text-2xl font-bold">DashBoard</h1>
@@ -88,6 +109,21 @@ const currentDate =  new Date()
                   email={data.email}
                   image={data.image}
                   time={data.time}
+                />
+              ))}
+            </DashboardCardContent>
+            <DashboardCardContent>
+              <section className="flex justify-between gap-2 pb-2">
+                <p>Recent Sales</p>
+                <CreditCard className="h-4 w-4" />
+              </section>
+              {PurchaseCard.map((data, index) => (
+                <UserPurchaseCard
+                  key={index}
+                  name={data.name}
+                  email={data.email}
+                  image={data.image}
+                  salesAmount={data.salesAmount}
                 />
               ))}
             </DashboardCardContent>
