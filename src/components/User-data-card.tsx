@@ -1,9 +1,9 @@
 export type UserDataProps = {
-  name: string
-  email: string
-  image: any
-  time:string
-}
+  name: string;
+  email: string;
+  image: string;
+  time: string;
+};
 export default function UserDataCard(props: UserDataProps) {
   const defaultImage = "./mesh.jpg";
   return (

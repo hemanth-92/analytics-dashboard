@@ -1,7 +1,7 @@
 export type UserPurchaseProps = {
   name: string;
   email: string;
-  image: any;
+  image: string;
   salesAmount: string;
 };
 export default function UserPurchaseCard(props: UserPurchaseProps) {

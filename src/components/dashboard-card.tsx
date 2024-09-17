@@ -4,7 +4,7 @@ import { cn } from "@/lib/utils";
 interface DashboardCardsProps {
   label: string;
   Icon: LucideIcon;
-  amount: any;
+  amount: string;
   description: string;
 }
 
