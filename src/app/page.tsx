@@ -18,7 +18,7 @@ export default async function DashBoard() {
     take: 8
   });
 
-  const UserData: UserDataProps[] = recentUsers.map((account: { name: any; email: any; image: any; createdAt: string | number | Date; }) => ({
+  const UserData: UserDataProps[] = recentUsers.map((account) => ({
     name: account.name || 'unknown',
     email: account.email || 'unknow',
     image: account.image || './mesh.jpg',
