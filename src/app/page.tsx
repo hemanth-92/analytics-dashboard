@@ -2,7 +2,7 @@ import { DashboardCard, DashboardCardContent } from "@/components/dashboard-card
 import UserDataCard, { UserDataProps } from "@/components/User-data-card";
 import { Calendar, CreditCard, DollarSign, PersonStanding, UserPlus, UserRoundCheck } from "lucide-react";
 import { db } from "@/lib/db";
-import { endOfMonth,startOfMonth,formatDistanceToNow, eachDayOfInterval, eachMonthOfInterval } from "date-fns";
+import { endOfMonth,startOfMonth,formatDistanceToNow, eachMonthOfInterval } from "date-fns";
 import UserPurchaseCard,{ UserPurchaseProps } from "@/components/user-purchase-card";
 import { format } from "date-fns/format";
 import BarChart from "@/components/barchart";
